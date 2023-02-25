@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>GFS Noah Nagel</title>
+  </head>
+  <body>
+
+    <!-- Einleitung -->
+    <section id="einleitung">
+      <h1>Willkommen zu meiner GFS!</h1>
+      <h3 class="text">In dieser GFS werde ich euch <strong>Arrays</strong>, <strong>Sortieralgorithmen</strong>, und ihre <strong>Anwendung</strong> anhand von einigen
+         Beispielen, Visualisierungen und Code <strong>erklären</strong>.</h3>
+      <h3 class="text">Desweiteren werde ich auf die <strong>Probleme</strong> von Sortieralgorithmen eingehen und einige zweckgebundene <strong>Alternativen</strong> vorstellen.</h3>
+      <h3 class="text">Dabei vergleichen wir die <strong>Performance</strong> und den <strong>Anwendungsbereich</strong> von den meistgenutzten vier Sortieralgorithmen: <strong>Quick Sort</strong>,
+         <strong>Selection Sort</strong>, <strong>Bubble Sort</strong> und <strong>Insertion Sort</strong>. Außerdem zeige ich euch wie man diese in <strong>C</strong> implementieren könnte.</h3>
+      <h3 class="text">Hierbei werde ich Konzepte wie <strong>Rekursion</strong> und <strong>Zeigerarithmetik</strong> benutzen und versuchen euch diese näher zu bringen.</h3>
+    </section>
+
+    <!-- Gliederung -->
+    <section id="gfs">
+      <h1>Gliederung</h1>
+      <h3>Was ist ein Array?</h3>
+      <ul class="ul-themen">
+        <li class="li-themen">Was ist der Unterschied zwischen Array und Liste?</li> 
+        <li class="li-themen">Was sind Array Listen, Link Listen und Arrays?</li> 
+        <li class="li-themen">Wie funktionieren Arrays?</li> 
+      </ul>
+      <h3>Was ist ein Sortieralgorithmus?</h3>
+      <ul class="ul-themen">
+         <li class="li-themen">Wie funktionieren Sortieralgorithmen (auf Arrays)?</li>
+         <li class="li-themen">Welche Sortieralgorithmen gibt es?</li> 
+         <li class="li-themen">Wann wird welcher Sortieralgorithmus benutzt?</li> 
+      </ul>
+      <h3>Vergleich Sortieralgorithmen</h3>
+      <ul class="ul-themen">
+       <li class="li-themen">Quick Sort</li>    
+       <li class="li-themen">Merge Sort</li>      
+       <li class="li-themen">Bubble Sort</li>       
+       <li class="li-themen">Insertion Sort</li> 
+       <li class="li-themen">Implementation in C</li> 
+       <li class="li-themen">Performance Vergleich</li> 
+      </ul>
+      <h3>Probleme von Sortieralgorithmen</h3>
+      <ul class="ul-themen">
+        <li class="li-themen">Suchalgorithmen</li>   
+        <li class="li-themen">
+          bessere Alternativen 
+          <br>-> sollte man überhaupt Sortieralgorithmen benutzen?
+       </li> 
+      </ul>
+     <h3>Fazit</h3>
+    </section>
+
+    <!-- Arrays -->
+    <section id="arrays">
+      <h1 style="margin-bottom: 25px;">Was sind Arrays?</h1>
+      <h3 class="text" style="    font-size: 22px;
+      line-height: 30px;">Arrays sind eine Datenstruktur bei der in einem Block des Arbeitsspeichers mehrere kleine Blöcke der selben größe untergebracht sind. 
+        Durch die Anordnung kann man die Position des Wertes eines Indexes unabhängig zur Länge des Arrays in einer schnellen Operation berechnen: <codeblock class="inline">value = getvalue(ARRAY_START + ARRAY_BLOCK_SIZE*index);</codeblock>
+        Hierbei ist es wichtig den Unterschied zwischen Arrays und assotiativen Arrays, welche es in einigen Sprachen wie PHP gibt zu beachten, bei diesen funktioniert obriges Prinzip nämlich nicht,
+        da diese andere Algorithmen wie Hash Tables oder Binary Trees verwenden um auch andere keys zuzulassen.
+        Hier der Vergleich zwischen einigen Datentypen die benutzt werden können um einzelne Blöcke zu speichern:</h3>
+      
+        <!-- Vergleich Array, Liste -->
+      <img src="array.png" style="width: 1200px;margin:25px;">
+    </section>
+
+    <!-- Sortieralgorithmen -->
+    <section id="sortieralgorithmen">
+      <h1>Was sind Sortieralgorithmen?</h1>
+      <h3 class="text">
+        Sortieralgorithmen werden verwendet, um eine <strong>Datenstruktur</strong>, wie ein Array, ein Heap oder eine Tree in <strong>eine bestimmte Ordnung</strong> zu bringen. Die Sortieralgorithmen in dieser GFS
+        sortieren die Werte eines Arrays vom kleinsten zum größten. Ein Sortierter Array kann zum Beispiel 
+        schneller durchsucht werden oder für ein Ranking verwendet werden. Die Arrays werden durch das verschieben, tauschen und vergleichen von Werten sortiert.
+      </h3>
+
+      <!-- Vergleich -->
+      <table style="width: 1200px;">
+        <tr class="tr-root">
+          <th>Algorithmus</th>
+          <th>Best Case</th>
+          <th>Average Case</th>
+          <th>Worst Case</th>
+          <th>Stabil</th>
+          <th>benötigter RAM</th>
+        </tr>
+        <tr>
+          <td>Bubble Sort</td>
+          <td>O(n)</td>
+          <td>O(n2)</td>
+          <td>O(n2)</td>
+          <td>ja</td>
+          <td><strong>1</strong> Element</td>
+        </tr>
+        <tr>
+          <td>Insertion Sort</td>
+          <td>O(n)</td>
+          <td>O(n2)</td>
+          <td>O(n2)</td>
+          <td>ja</td>
+          <td><strong>1</strong> Element</td>
+        </tr>
+        <tr>
+          <td>Quicksort</td>
+          <td>O(n log n)</td>
+          <td>O(n log n)</td>
+          <td>O(n2)</td>
+          <td>nein</td>
+          <td><strong>log n</strong> Elemente</td>
+        </tr>
+        <tr>
+          <td>Merge Sort</td>
+          <td>O(n log n)</td>
+          <td>O(n log n)</td>
+          <td>O(n log n)</td>
+          <td>ja</td>
+          <td><strong>n</strong> Elemente</td>
+        </tr>
+      </table>
+
+      <!-- Spezielle Algorithmen -->
+      <h3 class="text">Wie man sieht haben die Algorithmen verschiedenste Eigenschaften. Am Wichtigsten ist hierbei sowohl das <strong>Verhältnis der benötigten Operationen
+         zur Anzahl der Elemente des Arrays</strong>, als auch der <strong>benötigte RAM</strong> um temporäre Daten zu speichern. Einige spezielle Algorithmen wie Inrtrosort, Radix Sort und 
+         Bucket Sort wurden hier nicht aufgeführt. Das liegt daran das Introsort ein Hybrid Algorithmus ist und Radix/Bucket Sort nur mit Zahlen im Base10 System Funktioniert.</h3>
+    </section>
+    <!-- Sortieralgorithmen Vergleich -->
+    <section id="sortieralgorithmen-vergleich">
+      <h1>Sortieralgorithmen Vergleich</h1>
+      <h3>Vergleich von <strong>Quick Sort</strong>, <strong>Merge Sort</strong>, <strong>Bubble Sort</strong> und <strong>Insertion Sort</strong>.</h3>
+      <div id="sort-settings-wrap" class="sort-settings-wrap">
+        <div style="display: flex;">
+          <!-- Schieberegler -->
+          <div class="slidecontainer">
+            <p style="margin-bottom:5px"><strong>Verzögerung</strong></p>
+            <input type="range" min="1" max="250" value="100" step="1" class="slider" id="speed">
+          </div>
+          <div class="slidecontainer">
+            <p style="margin-bottom:5px"><strong>Array Länge</strong></p>
+            <div style="display: flex;">
+              <input type="range" min="20" max="270" value="20" step="50" class="slider" id="lenght" onchange="changelenght1()">
+              <input class="text-input" id="lenght-input" value="50" onchange="changelenght2()">
+            </div>
+          </div>
+
+          <!-- Auswahl -->
+          <div class="slidecontainer" style="  margin-right: 0;margin-left: auto;">
+            <p style="margin-bottom:5px"><strong>Algorithmus</strong></p>
+            <select style="color: #5E4AE3;" id="al_choice">
+              <option value="bubble_sort">Bubble Sort</option>
+              <option value="insertion_sort">Insertion Sort</option>
+              <option value="quick_sort">Quick Sort</option>
+              <option value="merge_sort">Merge Sort</option>
+              <option value="selection_sort">Selection Sort</option>
+              <option value="nsort">NSort</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Button -->
+        <div class="slidecontainer" style="display: flex;margin:0px;">
+          <button style="align-self: flex-end; margin-left: auto; color: #5E4AE3;" id="algorithm_button" onclick="algorithm()">Start</button>
+        </div>
+
+        </div>
+      </div>
+
+       <!-- Sortier Visualisierung -->
+      <div id="sort-container-wrap" class="sort-container-wrap">
+          <div class="sort-container" id="sort-container">
+      </div>
+    </section>
+
+    <section id="aufgabe1">
+      <h1>Aufgabe</h1>
+      <h3 class="text">Implementiere <strong>Selection Sort</strong> in Proccessing. Hierfür hast du 10 Minuten Zeit.</h3>
+      <h1 style="margin-bottom: 0px;">Timer</h1>
+        <div class="timer">
+          <h3 class="timer-button" onclick="timer_start()">Start</h3><h3 style="margin:10px; font-size: 50px;" id="timer1">10:00</h3><h3 class="timer-button" onclick="timer_increase()">Mehr</h3>
+        </div>
+      <div id="solution" style="width: 1200px; margin: 0 auto; margin-top: 2000px;background-color: #121619; border-radius: 5px;">
+        <h1 style="color: #8DA1B9;">Lösung</h1>
+      <codeblock style="margin: 0 auto;">void selectionSort(int array[]) {\
+§for (int i = 0; i < array.length - 1; i++) {\
+§§int minIndex = i;\
+§§for (int j = i + 1; j < array.length; j++)\
+§§§if (array[j] < array[minIndex])\
+§§§§minIndex = j;\
+§§if (i != minIndex) {\
+§§§int temp = array[i];\
+§§§array[i] = array[minIndex];\
+§§§array[minIndex] = temp;\
+§§}\
+§}\
+}</codeblock>
+</div>
+    </section>
+
+    <!-- Sortieralgorithmen Implementation -->
+    <section id="implementation">
+      <h1>Implementation in C</h1>
+      <h3 class="text">Die Sortieralgorithmen hier wurden mit enormer nutzung von den Möglichkeiten der <strong>C Zeigerarithmetik</strong>, und <strong>Rekursion</strong> implementiert. Diese ermöglicht eine Effiziens, welche in anderen Sprachen wie Java einfach unmöglich wäre.</h3>
+      <h1>Bubble Sort</h1>
+      <codeblock>void bubblesort(int*_start,int*end)\
+{\
+§int* start;\
+§int temp;\
+§// so oft durch Array "bubblen" bis keine swaps mehr nötig sind\
+§for(char swapped = 1;swapped;)\
+§{\
+§§swapped = 0;\
+§§for(start = _start;start!=end;start++)\
+§§{\
+§§§if(*start > *(start+1))\
+§§§{\
+§§§§swapped = 1;\
+§§§§temp = *start;\
+§§§§*start = *(start +1);\
+§§§§*(start+1) = temp;\
+§§§}\
+§§}\
+§}\
+}</codeblock>
+      <h1>Insertion Sort</h1>
+      <codeblock>void insertionsort(int*start, int*end)\
+{\
+§int*_start = start;\
+§for(start++;start<=end;start++)\
+§{\
+§§int current = *start;\
+§§int*i = start -1;\
+§§// neue Position ermitteln\
+§§for(;i >= _start && *i > current;i--)\
+§§§*(i+1) = *i;\
+§§*(i + 1) = current;\
+§}\
+}</codeblock>
+      <h1>Quicksort</h1>
+      <h3>Das sortieren von 1M Elementen hat hier <strong>121</strong> Milisekunden gedauert.</h3>
+<codeblock>void quicksort(int* start, int* end) {\
+§if (start >= end)\
+§§return;\
+§int pivot = *end;\
+§int* left = start;\
+§int* right = end;\
+§for (;left <= right;)\
+§{\
+§§for (;*left < pivot; left++);\
+§§for (;*right > pivot; right--);\
+§§if (left <= right)\
+§§{\
+§§§int temp = *left;\
+§§§*left = *right;\
+§§§*right = temp;\
+§§§left++;\
+§§§right--;\
+§§}\
+§}\
+§// gleicher Algorithmus rekursiv auf ganzen Array anwenden\
+§quicksort(start, right);\
+§quicksort(left, end);\
+}\
+\
+static inline void swap(int*a, int*b)\
+{\
+§int t = *a;\
+§*b = *a;\
+§*a = t;\
+}</codeblock>
+      <h1>Merge Sort</h1>
+      <h3>Das sortieren von 1M Elementen hat hier <strong>182</strong> Milisekunden gedauert.</h3>
+<codeblock>void mergesort(int*start, int*end)\
+{\
+§int lenght = end - start;\
+§if(lenght < 2)\
+§§return;\
+§int midIndex = lenght/2;\
+§int*left = start;\
+§int*left_end = start + midIndex;\
+§int*right = start + midIndex;\
+§int*right_end = end;\
+§// Array rekursiv teilen\
+§mergesort(left, left_end);\
+§mergesort(right, right_end);\
+§int*temp = (int*) calloca(sizeof(int), (lenght));\
+§int*temp_start = temp;\
+§int*temp_end = temp + lenght;\
+§merge(temp_start, temp_end, left, left_end, right, right_end);\
+§for (; temp != temp_end; ++temp, ++start)\
+§§*start = *temp;\
+}\
+\
+void merge(int*main_start, int*main_end, int*left_start, int*left_end, int*right_start, int*right_end)\
+{\
+§// arrays "mergen"\
+§for(;left_start != left_end && right_start != right_end;++main_start)\
+§{\
+§§if(*left_start <= *right_start)\
+§§{\
+§§§*main_start = *left_start;\
+§§§++left_start;\
+§§}\
+§§else\
+§§{\
+§§§*main_start = *right_start;\
+§§§++right_start;\
+§§}\
+§}\
+§// elemente wenn noch vorhanden zum Ende hinzufügen\
+§for(;left_start != left_end;++main_start, ++left_start)\
+§§*main_start = *left_start;\
+§for(;right_start != right_end;++main_start, ++right_start)\
+§§*main_start = *right_start ;\
+}</codeblock>
+    </section>
+
+    <!-- Suchalgorithmen -->
+    <section id="suchalgorithmen">
+      <h1>Suchalgorithmen</h1>
+      <h3 class="wide-text">Ein Grund Arrays zu sortieren sind Sortieralgorithmen, diese werden dazu verwendet um Datentypen mit Schlüsseln möglich zu machen. Auf Arrays gibt es hier nur zwei Optionen, nämlich <strong>Linear Search</strong> und <strong>
+         Binary Search</strong>, aber Binary Search funktioniert nur auf sortierten Arrays.</h3>
+      <div id="sort-settings-wrap" class="sort-settings-wrap">
+        <div style="display: flex;">
+          <!-- Schieberegler -->
+          <div class="slidecontainer">
+            <p style="margin-bottom:5px"><strong>Verzögerung</strong></p>
+            <input type="range" min="1" max="250" value="100" step="1" class="sslider" id="srt-speed">
+          </div>
+          <div class="slidecontainer">
+            <p style="margin-bottom:5px"><strong>Array Länge</strong></p>
+            <div style="display: flex;">
+              <input type="range" min="20" max="270" value="20" step="50" class="sslider" id="srt-lenght" onchange="srt_changelenght1()">
+              <input class="text-input" style="color: #35A7FF;"id="srt-lenght-input" value="50" onchange="srt_changelenght2()">
+            </div>
+          </div>
+
+          <!-- Suche -->
+          <div class="slidecontainer" style="margin: auto;">
+            <p style="margin-bottom:5px"><strong>Suche</strong></p>
+            <input class="text-input" style="color: #35A7FF;"id="search-input" value="25">
+          </div>
+
+          <!-- Auswahl -->
+          <div class="slidecontainer" style="  margin-right: 0;margin-left: auto;">
+            <p style="margin-bottom:5px"><strong>Algorithmus</strong></p>
+            <select style="color: #35A7FF;" id="srt_choice">
+              <option value="linear_search">Linear Search</option>
+              <option value="binary_search_random">Binary Search Random</option>
+              <option value="binary_search">Binary Search</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Button -->
+            <div class="slidecontainer" style="display: flex;margin:0px;">
+              <button style="align-self: flex-end; margin-left: auto; color: #35A7FF;" id="search-button" onclick="search()">Start</button>
+           </div>
+          </div>
+        </div>
+
+      <div id="sort-container-wrap" class="sort-container-wrap">
+        <div class="sort-container" id="search-container">
+      </div>
+    </section>
+
+    <!-- Alternativen  -->
+    <section id="alternativen">
+      <h1>Alternativen</h1>
+      <div style="display: flex; max-width: 1200px; margin: 0 auto;">
+        <h3>Für die Suche über mehrere Elemente sind die verschiedenen Typen von <strong>Binary Trees</strong> eine gute Alternativ gegenüber sortierten Arrays, da man hier auch schnell neue Elemente einsetzen kann.
+          Aber auch wenn man zum Beispiel ein Ranking erstellen will können Trees die bessere Alternative sein, da man hier auch Attribute wie den Minimal-, oder Maximalwert direkt auslesen kann.
+        </h3>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/67/Sorted_binary_tree.svg">
+      </div>
+      <h1>Fazit</h1>
+      <h3 class="text">Arrays aber sind in nahezu jeder Anwendung <strong>unverzichtbar</strong>, aber in den meisten Fällen gibt es bessere Alternativen gegenüber sortierten Arrays.</h3>
+    </section>
+
+    <!-- Abschluss und Quellen -->
+    <section id="abschluss">
+      <h1>Vielen Dank fürs zuhören!</h1>
+
+      <!-- Quellen -->
+     <h2>Quellen</h2>
+      <ul class="ul-abschluss">
+        <li class="li-abschluss">
+          <strong>Sortieralgorithmen</strong> <a href="https://de.wikipedia.org/wiki/Sortierverfahren">https://de.wikipedia.org/wiki/Sortierverfahren</a>
+        </li>
+
+        <!-- Sortieralgorithmen -->
+        <li class="li-abschluss">
+          <strong>Bubble Sort</strong> <a href="https://en.wikipedia.org/wiki/Bubble_sort">https://en.wikipedia.org/wiki/Bubble_sort</a>
+        </li>
+        <li class="li-abschluss">
+          <strong>Insertion Sort</strong> <a href="https://en.wikipedia.org/wiki/Insertion_sort">https://en.wikipedia.org/wiki/Insertion_sort</a>
+        </li>
+        <li class="li-abschluss">
+          <strong>Quicksort</strong> <a href="https://en.wikipedia.org/wiki/Quicksort">https://en.wikipedia.org/wiki/Quicksort</a>
+        </li>
+        <li class="li-abschluss">
+          <strong>Quicksort Visualisierung</strong> <a href="https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif">https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif</a>
+        </li>
+        <li class="li-abschluss">
+          <strong>Merge Sort</strong> <a href="https://en.wikipedia.org/wiki/Merge_sort">https://en.wikipedia.org/wiki/Merge_sort</a>
+        </li>
+        <li class="li-abschluss">
+          <strong>Selection Sort</strong> <a href="https://en.wikipedia.org/wiki/Selection_sort">https://en.wikipedia.org/wiki/Selection_sort</a>
+        </li>
+
+        <!-- Binary Search -->
+        <li class="li-abschluss">
+          <strong>Binary Search</strong> <a href="https://en.wikipedia.org/wiki/Binary_search_algorithm">https://en.wikipedia.org/wiki/Binary_search_algorithm</a>
+        </li>
+
+        <!-- RAM -->
+        <li class="li-abschluss">
+          <strong>Random Access Memory</strong> <a href="https://en.wikipedia.org/wiki/Random-access_memory">https://en.wikipedia.org/wiki/Random-access_memory</a>
+        </li>
+
+        <!-- coding with john -->
+        <li class="li-abschluss">
+          <strong>Coding with John</strong> <a href="https://www.youtube.com/@CodingWithJohn">https://www.youtube.com/@CodingWithJohn</a>
+        </li>
+      </ul>
+
+      <!-- shuffle -->
+      <li class="li-abschluss">
+        <strong>Fisher Yates Misch-Algorithmus</strong> <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle">https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle</a>
+      </li>
+    </section>
+    <div id="overlay">
+    </div>
+    <script src="Main.js"></script>
+    <script src="sortieralgorithmen.js"></script>
+    <script src="suchalgorithmen.js"></script>
+    <script src="timer.js"></script>
+  </body>
+</html>

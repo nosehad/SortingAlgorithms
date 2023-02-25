@@ -1,0 +1,1 @@
+gcc Main.c gfs.c Sortieralgorithmen/InsertionSort.c Sortieralgorithmen/BubbleSort.c Sortieralgorithmen/MergeSort.c Sortieralgorithmen/QuickSort.c -w -g -o algorithmen && ./algorithmen
