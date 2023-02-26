@@ -1,7 +1,7 @@
 #ifndef MERGE_H
     #define MERGE_H
 
-    #include "../gfs.h"
+    #include "../sortingalgorithms.h"
 
     #include <stdlib.h>
     #include <string.h>

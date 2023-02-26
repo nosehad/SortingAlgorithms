@@ -2,6 +2,7 @@
 
 void insertionsort(int*start, int*end)
 {
+    /* store start in temporary variable that is used in arithmetic operations */
     int*_start = start;
     /* iterate over array*/
     for(start++;start<=end;start++)

@@ -1,0 +1,295 @@
+
+html, body{
+  margin: 0;
+  padding: 0;
+  height: 100%;  
+  scroll-behavior: smooth;
+  color: #FAF4D3;
+  background-color: #5E4AE3;
+  position: relative;   
+  font-family: 'Open Sans', sans-serif; 
+  text-align: center;
+  overflow:  hidden;
+}
+
+body strong
+{
+  color: #9EBC9E;
+}
+
+body h1
+{
+  padding-top: 10px;
+  text-shadow: 2px 2px #9EBC9E;
+}
+
+html::-webkit-scrollbar{ display:none; }
+
+html::-webkit-scrollbar {
+  width: 0px;  /* remove scrollbar space */
+  background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+html {
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; /* Firefox 64 */
+}
+
+
+strong
+{
+  color: #279AF1;
+}
+
+h1 
+{
+  font-size: 45px;
+  text-shadow: 2px 2px #279AF1;
+}
+
+.text
+{
+  width: 1200px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.wide-text
+{
+  width: 85%;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h3
+{
+  font-size: 30px;
+}
+
+section {
+  padding-top: 30px;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
+  font-weight: 300;
+  text-align: center;
+  position: relative;
+}
+
+.sort-container
+{
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+  display: flex;
+}
+
+.text-input
+{
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  margin-top: 1.9px;
+  border-radius: 5px;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 140px;
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 23px;
+  background: #d3d3d3;
+  color: #5E4AE3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  cursor:pointer;
+}
+
+.text-input:hover
+{
+  opacity: 1;
+}
+
+.sort-container-value
+{
+  background-color: #FCFCFC;
+}
+
+.sort-container-value-primary
+{
+  background-color: #042A2B;
+}
+
+.sort-container-value-secondary
+{
+  background-color: #5EB1BF;
+}
+
+.sort-settings-wrap
+{
+  margin: 0 auto;
+  max-width: 85%;
+}
+
+.sort-container-wrap
+{
+  margin: 0 auto;
+  max-width: 85%;
+  height: 600px;
+}
+
+.slider {
+  border-radius: 5px;
+  -webkit-appearance: none;  
+  appearance: none;
+  width: 140px; 
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 25px; 
+  background: #d3d3d3; 
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s; 
+  transition: opacity .2s;
+}
+
+.slidecontainer
+{
+  margin:5px;
+}
+
+select
+{
+  cursor: pointer;
+  margin: 2px;
+  border: none;
+  -webkit-appearance: none;  
+  appearance: none;
+  width: 150px; 
+  height: 26px; 
+  background: #d3d3d3; 
+  outline: none;
+  opacity: 0.7;
+  color: #042A2B;
+  padding-right: 5px;
+  -webkit-transition: .2s; 
+  transition: opacity .2s;
+  border-radius: 5px;
+}
+
+select:hover
+{
+  opacity: 1;
+}
+
+option
+{
+  text-align: center;
+}
+
+.slider:hover {
+  opacity: 1; 
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 25px; 
+  height: 25px;
+  background: #9EBC9E; 
+  cursor: pointer; 
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; 
+  height: 25px; 
+  background: #9EBC9E; 
+  cursor: pointer; 
+}
+
+.sslider {
+  border-radius: 5px;
+  -webkit-appearance: none;  
+  appearance: none;
+  width: 140px; 
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 25px; 
+  background: #d3d3d3; 
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s; 
+  transition: opacity .2s;
+}
+
+
+.sslider:hover {
+  opacity: 1; 
+}
+
+.sslider::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 25px; 
+  height: 25px;
+  background: #ED6A5A; 
+  cursor: pointer; 
+}
+
+.sslider::-moz-range-thumb {
+  width: 25px; 
+  height: 25px; 
+  background: #ED6A5A; 
+  cursor: pointer; 
+}
+
+button {
+  margin: 2px;
+  cursor: pointer;
+  border: none;
+  -webkit-appearance: none;  
+  appearance: none;
+  width: 150px; 
+  height: 25px; 
+  background: #d3d3d3; 
+  outline: none;
+  opacity: 0.7;
+  color: #042A2B;
+  padding-right: 5px;
+  -webkit-transition: .2s; 
+  transition: opacity .2s;
+  border-radius: 5px;
+}
+
+button:enabled:hover
+{
+  opacity: 1;
+}
+
+button:disabled
+{
+  cursor:progress;
+}
+
+a
+{
+  text-decoration: none;
+}
+
+.ul-abschluss {
+  margin: 0 auto;
+  max-width: fit-content;
+}
+
+.li-abschluss {
+  font-size: 20px;
+  text-align: left;
+}
+
+.li-abschluss a
+{
+  color: #F2E3BC;
+}

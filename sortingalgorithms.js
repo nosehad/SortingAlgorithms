@@ -16,7 +16,6 @@ class SortingContainer
     container_doc;
     max;
     element_width;
-    stopped;
 
     // aktive Elemente
     primary_old;
@@ -24,8 +23,11 @@ class SortingContainer
     third_old;
     fourth_old;
 
+    operations;
+
     constructor(lenght)
     {
+        this.operations = 0;
         this.delay = document.getElementById("speed").value;
         this.array = new Int32Array(lenght);
         this.element_array = new Array(lenght);
@@ -36,7 +38,7 @@ class SortingContainer
         this.max = lenght;
         for(let l = 0; l < lenght; ++l)
             this.array[l] = l;
-        shuffle(this.array);
+        this.f_shuffle();
         this.initial_render();
 
         this.primary_old = 0;
@@ -53,10 +55,15 @@ class SortingContainer
             await this.as_initial_render();
             this.ready = true;
             current_cooldown = false;
+            // reenable buttons
+            document.getElementById("algorithm_button").disabled = false;
+            document.getElementById("shuffle_button").disabled = false;
             return;
         }
         for(let l = 0; l < this.max; ++l)
         {
+            // mark render as operation
+            this.inc_operations();
             const el = document.createElement("div");
             el.id = `scv-${l}`;
             el.classList.add("sort-container-value");
@@ -67,12 +74,17 @@ class SortingContainer
         }
         this.ready = true;
         current_cooldown = false;
+        // reenable buttons
+        document.getElementById("algorithm_button").disabled = false;
+        document.getElementById("shuffle_button").disabled = false;
     }
 
     async as_initial_render()
     {
         for(let l = 0; l < this.max; ++l)
         {
+            // mark render as operation
+            this.inc_operations();
             const el = document.createElement("div");
             el.id = `scv-${l}`;
             el.classList.add("sort-container-value");
@@ -80,10 +92,46 @@ class SortingContainer
             el.style.height = `${(this.array[l]/this.max)*this.container_doc.offsetHeight}px`
             this.container_doc.appendChild(el);
             this.element_array[l] = el;
-            await sleep(0.1);
+            if(l % 10 == 0)
+                await sleep(1);
             if(!current_cooldown)
                 return;
         }
+    }
+
+    async f_shuffle() 
+    { 
+        for (let i = this.array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [this.array[i], this.array[j]] = [this.array[j], this.array[i]];
+        }
+        return this.array;
+    }
+
+    async shuffle() 
+    { 
+        for (let i = this.array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          this.primary(i);
+          this.secondary(j);
+          this.inc_operations();
+          [this.array[i], this.array[j]] = [this.array[j], this.array[i]];
+          await sleep(this.delay);
+        }
+        return this.array;
+    }
+
+    reset_operations()
+    {
+        this.operations = 0;
+        document.getElementById("operations").innerHTML = 0;
+    }
+
+
+    inc_operations()
+    {
+        this.operations++;
+        document.getElementById("operations").innerHTML = this.operations;
     }
 
     async rerender()
@@ -136,11 +184,6 @@ class SortingContainer
         this.update_render(index);
     }
 
-    async nsort(start, end)
-    {
-
-    }
-
     async bubble_sort()
     {
         let swaps;
@@ -157,6 +200,8 @@ class SortingContainer
               this.array[i + 1] = this.array[i];
               this.array[i] = temp;
               swaps = true;
+              // mark swap as one operation
+              this.inc_operations();
             } 
           }
         } while (swaps);
@@ -170,6 +215,8 @@ class SortingContainer
             let j = i;
             for (; j > 0 && currentUnsortedItem < this.array[j - 1]; j--) {
               this.array[j] = this.array[j - 1];
+              // mark swap as operation
+              this.inc_operations();
               this.third(j);
               this.fourth(j-1);
               await sleep(this.delay);
@@ -178,6 +225,7 @@ class SortingContainer
             }
             this.array[j] = currentUnsortedItem;
             this.secondary(j);
+            this.inc_operations();
             await sleep(this.delay);
             if(this.stopped)
                 return;
@@ -194,21 +242,21 @@ class SortingContainer
             for(let j = i + 1; j<this.max; j++) {
                 this.third(j);
                 this.fourth(mi);
+                // mark check as operation
+                this.inc_operations();
                 if(this.array[j] < this.array[mi])
                     mi = j;
                 await sleep(this.delay);   
-                if(this.stopped)
-                    return;
             }
     
             temp = this.array[i];
             this.array[i] = this.array[mi];
             this.array[mi] = temp;
+            // mark swap as operation
+            this.inc_operations();
             this.primary(i);
             this.secondary(mi);
             await sleep(this.delay);
-            if(this.stopped)
-                return;
         }
     }
     
@@ -224,30 +272,32 @@ class SortingContainer
     
         while (i <= j) {
             while (this.array[i] < pivot) {
+                // mark check as operation
+                this.inc_operations();
+                // set primary 
                 this.primary(i);
                 await sleep(this.delay);
-                if(this.stopped)
-                    return;
                 i++;
             }
             while (this.array[j] > pivot) {
+                // mark check as operation
+                this.inc_operations();
+                // set secondary
                 this.secondary(j);
                 await sleep(this.delay);
-                if(this.stopped)
-                    return;
                 j--;
             }
             if (i <= j) {
                 this.third(i);
                 this.fourth(j);
                 await sleep(this.delay);
-                if(this.stopped)
-                    return;
                 temp = this.array[i];
                 this.array[i] = this.array[j];
                 this.array[j] = temp;
                 i++;
                 j--;
+                // mark swap as operation
+                this.inc_operations();
             }
         }
         if (j > low) {
@@ -261,6 +311,8 @@ class SortingContainer
 
     async merge_sort(low, high) {
         if (low < high) {
+            // mark calculation as operation
+            this.inc_operations();
             let middle = Math.floor((low + high) / 2);
             await this.merge_sort(low, middle);
             await this.merge_sort(middle + 1, high);
@@ -279,38 +331,40 @@ class SortingContainer
         let k = 0;
     
         while (i <= middle && j <= high) {
+            // mark check as operation
+            this.inc_operations();
+            // mark copy as operation
+            this.inc_operations();
             if (this.array[i] < this.array[j]) {
                 temp[k] = this.array[i];
                 this.primary(i);
                 this.secondary(k);
                 await sleep(this.delay);
-                if(this.stopped)
-                    return;
                 i++;
             } else {
                 temp[k] = this.array[j];
                 this.primary(i);
                 this.secondary(k);
                 await sleep(this.delay);
-                if(this.stopped)
-                    return;
                 j++;
             }
             k++;
         }
     
         while (i <= middle) {
+            // mark copy as operation
+            this.inc_operations();
             temp[k] = this.array[i];
             this.primary(i);
             this.secondary(k);
             await sleep(this.delay);
-            if(this.stopped)
-                return;
             i++;
             k++;
         }
     
         while (j <= high) {
+            // mark copy as operation
+            this.inc_operations();
             temp[k] = this.array[j];
             this.primary(i);
             this.secondary(k);
@@ -322,6 +376,8 @@ class SortingContainer
         }
     
         for (let x = low, y = 0; x <= high; x++, y++) {
+            // mark copy as operation
+            this.inc_operations();
             this.array[x] = temp[y];
             this.primary(x);
             this.secondary(y);
@@ -337,19 +393,21 @@ let init = () =>
 }
 
 let changelenght = () =>
-{
-    document.getElementById("algorithm_button").innerHTML = "Start"; 
-    if(current_cooldown == true)
+{ 
+    if(current_cooldown == true || sorting == true)
         return;
+    document.getElementById("algorithm_button").disabled = true;
+    document.getElementById("shuffle_button").disabled = true;
     current_cooldown = true;
     current_s_container = new SortingContainer(document.getElementById("lenght-input").value);
 }
 
 let changelenght1 = () =>
 {
-    document.getElementById("algorithm_button").innerHTML = "Start";
-    if(current_cooldown == true)
+    if(current_cooldown == true || sorting == true)
         return;
+    document.getElementById("algorithm_button").disabled = true;
+    document.getElementById("shuffle_button").disabled = true;
     current_cooldown = true;
     current_s_container = new SortingContainer(document.getElementById("lenght").value);
     document.getElementById("lenght-input").value = document.getElementById("lenght").value;
@@ -357,9 +415,10 @@ let changelenght1 = () =>
 
 let changelenght2 = () =>
 {
-    document.getElementById("algorithm_button").innerHTML = "Start";
-    if(current_cooldown == true)
+    if(current_cooldown == true || sorting == true)
         return;
+    document.getElementById("algorithm_button").disabled = true;
+    document.getElementById("shuffle_button").disabled = true;
     current_cooldown = true;
     current_s_container = new SortingContainer(document.getElementById("lenght-input").value);
     document.getElementById("lenght").value = document.getElementById("lenght-input").value;
@@ -375,18 +434,29 @@ window.addEventListener("resize", () => {
     changelenght();
   });
 
+
+async function shuffle()
+{
+    if(!current_s_container.ready || sorting == true)
+        return;
+    document.getElementById("algorithm_button").disabled = true;
+    document.getElementById("shuffle_button").disabled = true;
+    current_s_container.reset_operations();
+    // set delay
+    current_s_container.delay = document.getElementById("speed").value;
+    await current_s_container.shuffle();
+    document.getElementById("algorithm_button").disabled = false;
+    document.getElementById("shuffle_button").disabled = false;
+}
+
 async function algorithm()
 {
-    if(!current_s_container.ready)
+    if(!current_s_container.ready || sorting == true)
         return;
-    if(sorting == true)
-    {
-        sorting = false;
-        current_s_container.stopped = true;
-        changelenght();
-    }
     sorting = true;
-    document.getElementById("algorithm_button").innerHTML = "Stop";
+    document.getElementById("algorithm_button").disabled = true;
+    document.getElementById("shuffle_button").disabled = true;
+    current_s_container.reset_operations();
     current_s_container.delay = document.getElementById("speed").value;
     switch(document.getElementById("al_choice").value)
     {
@@ -395,9 +465,6 @@ async function algorithm()
             break;
         case "selection_sort":
             await current_s_container.selection_sort();
-            break;
-        case "nsort":
-            await current_s_container.nsort(0, current_s_container.max-1);
             break;
         case "quick_sort":
             await current_s_container.quick_sort(0, current_s_container.max-1);
@@ -410,18 +477,9 @@ async function algorithm()
             await current_s_container.bubble_sort();
             break;
     }
-    document.getElementById("algorithm_button").innerHTML = "Start";
+    document.getElementById("algorithm_button").disabled = false;
+    document.getElementById("shuffle_button").disabled = false;
     sorting = false;
 }
-
-// Fisher–Yates shuffle ("misch") Algorithmus um Elemente von Array zufällig zu sortieren
-let shuffle = (array) => 
-{ 
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
 
 init();
